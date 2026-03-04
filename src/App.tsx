@@ -2,6 +2,7 @@ import './App.css';
 import ChanceImage from './assets/chance.png';
 import CommunityChestImage from './assets/community-chest.png';
 import WozopolyImage from './assets/wozopoly.png';
+import DiceImage from './assets/dice.png';
 
 import { useState } from 'react';
 import { Card } from './components/Card';
@@ -95,14 +96,22 @@ function App() {
         <img src={WozopolyImage} alt='' />
       </div>
       <div className='center'>
-        <button onClick={rollDice}>Roll dice</button>
-        <h2>{person ? `${person}'s turn!` : <span>&nbsp;</span>}</h2>
-        <button onClick={skipPerson}>Not here?</button>
+        <button className='dice-btn' onClick={rollDice} disabled={isPlaying}>
+          <img src={DiceImage} alt='Roll dice' />
+        </button>
+        <div className='flex'>
+          <h2>{person ? `${person}'s turn!` : <span>&nbsp;</span>}</h2>
+          {person && (
+            <button onClick={skipPerson} disabled={!isPlaying}>
+              Not here?
+            </button>
+          )}
+        </div>
       </div>
-      <p className='read-the-docs'>Choose your fate!</p>
       <div className='cards'>
         <Card
           img={ChanceImage}
+          disabled={!isPlaying}
           onClick={() => {
             if (!isPlaying) return;
             pickCard('chance');
@@ -110,6 +119,7 @@ function App() {
         />
         <Card
           img={CommunityChestImage}
+          disabled={!isPlaying}
           onClick={() => {
             if (!isPlaying) return;
             pickCard('community-chest');
