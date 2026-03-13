@@ -4,6 +4,7 @@ export const cards = [
   {
     title: '2 Advance to Pall Mall',
     description: 'If you pass Go, collect £200.',
+    effect: '',
   },
   {
     title: '3 Advance to The Strand',
@@ -43,11 +44,11 @@ export const specialCards = [
   {
     title: 'Go to Jail',
     description: 'Go directly to Jail. Do not pass Go, do not collect £200.',
-    result: 'HOST',
+    special: 'HOST' as const,
   },
   {
     title: 'You are Assessed for Street Repairs',
     description: 'Pay £40 per house and £115 per hotel you own.',
-    result: 'QUOTE',
+    special: 'QUOTE' as const,
   },
 ];
