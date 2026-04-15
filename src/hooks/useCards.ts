@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-type Card = {
+export type Card = {
   title: string;
   description: string;
   image?: object;
@@ -11,10 +11,7 @@ type Card = {
 type CardType = 'chance' | 'community-chest';
 
 export function useCards(numPlayers: number, cards: Card[], specialCards: Card[]) {
-  // build the decks
-
   const [deck, setDeck] = useState<Card[][]>(() => buildDecks(numPlayers, cards, specialCards));
-
   const [currentCard, setCurrentCard] = useState<Card | null>(null);
 
   const drawCard = (type: CardType) => {
@@ -31,32 +28,20 @@ export function useCards(numPlayers: number, cards: Card[], specialCards: Card[]
   const removeCard = () => {
     let pile = deck[0].length > deck[1].length ? 0 : 1;
 
-    for (let i = 0; i < deck[pile].length; i++) {
-      const card = deck[pile][i];
-      if (!card.special) {
-        setDeck((prev) => {
-          const updatedDeck = [...prev];
-          updatedDeck[pile] = prev[pile].filter((_, index) => index !== i);
-          return updatedDeck;
-        });
-        return true;
+    for (let count = 0; count < 2; count++) {
+      for (let i = 0; i < deck[pile].length; i++) {
+        const card = deck[pile][i];
+        if (!card.special) {
+          setDeck((prev) => {
+            const updatedDeck = [...prev];
+            updatedDeck[pile] = prev[pile].filter((_, index) => index !== i);
+            return updatedDeck;
+          });
+          return true;
+        }
       }
+      pile = ++pile % 2;
     }
-
-    pile = pile++ % 2;
-
-    for (let i = 0; i < deck[pile].length; i++) {
-      const card = deck[pile][i];
-      if (!card.special) {
-        setDeck((prev) => {
-          const updatedDeck = [...prev];
-          updatedDeck[pile] = prev[pile].filter((_, index) => index !== i);
-          return updatedDeck;
-        });
-        return true;
-      }
-    }
-
     return false;
   };
 
